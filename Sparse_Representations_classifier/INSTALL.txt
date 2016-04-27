@@ -1,0 +1,37 @@
+
+
+
+########  Installation will require CVX (not included) ################
+CVX can be obtained from :
+http://cvxr.com/cvx/download/
+
+CVX needs to be in your path before you start using this file
+Once CVX is installed
+Add the SRC folder to your path.
+Then run SRC by calling the following function
+
+[predictions,src_scores,uniqlabels]=src(Traindata,Trainlabels,Testdata,sp_level)
+
+
+See example.m for a dry run
+Can handle multiple label classifications
+Works almost as good as SVM on binary classifications of high dimensional datasets
+
+########## ABOUT###########################
+#The kernel sparse representations classifier implemented here was developed as a part of the work towards the paper
+ 
+1) Gaonkar, Bilwaj, and Christos Davatzikos. "Analytic estimation of statistical significance maps for support vector machine based multi-variate image analysis and classification." NeuroImage 78 (2013): 270-283.
+
+and is based on the paper:
+
+ 2)Robust Face Recgnition via Sparse Representation John Wright, Student Member, Allen Y. Yang, Member, Arvind Ganesh, Student Member,
+S. Shankar Sastry, Fellow, and Yi Ma, Senior Member.
+
+
+#Please cite both papers in your work appropriately
+# I have modified it sufficiently to solve things in kernel space
+# as opposed to the original classifier which was in feature space
+
+
+
+
