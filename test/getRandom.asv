@@ -6,8 +6,7 @@ function [ randoms ] = getRandom( nbrPatcheVoulu, pSize, RWidth, RHeight )
 %   PSIZE the size of a patch (they are squares)
 %   RWIDTH the width of the image from which we will get the patches
 %   RHEIGHT the height of the image from which we will get the patches
-%   The coordinates returned are the top-left of the patch and are
-%   calculated so no patches are outside or over the edge of the image.
+%  
 
 % Mise en place des intervalles
 % On a un intervale pour la largeur et un autre pour la hauteur
