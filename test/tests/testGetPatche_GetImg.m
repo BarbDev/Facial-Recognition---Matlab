@@ -40,9 +40,6 @@ end
 
 patches = zeros(pSize*pSize,nbrR*nbrC, 'uint8');
 size(patches)
-% imshow(R)
-% hold on
-% rectangle('Position', [1 1 pSize-1 pSize-1] );
 count = 1;
 for i = 1:nbrR
     for j = 1:nbrC
