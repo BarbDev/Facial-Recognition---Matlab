@@ -15,7 +15,7 @@ if nargin == 2
 end
 
 if overflow >= pSize
-    error('The overflowSize cannot be equal or superior to pSize')
+    error('The overflow cannot be equal or superior to pSize')
 end
 
 % Image carré avec patch carré
