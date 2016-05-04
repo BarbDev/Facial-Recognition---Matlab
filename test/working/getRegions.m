@@ -3,14 +3,14 @@ function [ R ] = getRegions( img )
 %   The regions are stored in a matrix of ?:?:4 and returned
 
 % Lecture de la taille de l'image
-[width, height] = size(img);
+[height, width] = size(img);
 
 Rwidth = width / 2;
 Rheight = height / 2;
 
 % On boucle sur les 4 Region
 count = 1;
-R = uint8(zeros(Rwidth,Rheight,4)); % Pour de meilleur performance,
+R = zeros(Rheight,Rwidth,4, 'uint8'); % Pour de meilleur performance,
 % pré-allocation et conversion en uint8 pour correspondre aux données
 % de l'image
 for j = 0:1
