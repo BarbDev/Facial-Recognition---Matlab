@@ -13,7 +13,7 @@ end
 pSize = sqrt(vSize);
 RHeight = Rsize(1,1);
 RWidth = Rsize(1,2);
-img = zeros(RHeight,RWidth, 'uint8');
+img = zeros(RHeight,RWidth);
 
 nbrCtemp = RWidth / (pSize-overflow);
 nbrC = uint32(nbrCtemp);

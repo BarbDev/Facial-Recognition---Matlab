@@ -37,7 +37,7 @@ if mod(nbrR,1) ~= 0 && mod(nbrR,1) < 0.5
     nbrR = nbrR + 1;
 end
 
-patches = zeros(pSize*pSize,nbrR*nbrC, 'uint8');
+patches = zeros(pSize*pSize,nbrR*nbrC);
 count = 1;
 for i = 1:nbrR
     for j = 1:nbrC

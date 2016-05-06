@@ -1,4 +1,4 @@
-function [ normVector ] = normDct2( vPatch, pSize, doNorm )
+function [ newPatches ] = normDct2( patches, doMean, doVar )
 %NORMDCT Apply zero mean and variance + dct2
 %   Reconstruct the patch from a vector and apply normalization to have
 %   zero mean and unit variance.
@@ -9,19 +9,22 @@ if nargin ~= 3
     error('Not enough argument')
 end
 
-patch = reshape(vPatch, [pSize pSize]);
+[vSize, nbrFeature] = size(patches);
+pSize = sqrt(vSize);
+newPatches = patches; % Memory allocation
 
-X = double(patch);
-if doNorm
-    % Zero mean
-    X = X-mean(X(:));
-    % Zero variance
-    X = X/std(X(:));
+for i = 1:nbrFeature
+    %% On normalise les patches pour avoir 'zero mean and unit variance'
+    X = reshape(patches(:,i), [pSize pSize]);
+    if doMean
+        X = X-mean2(X); % Zero mean
+    end
+    if doVar
+        X = X/std2(X); % Zero variance
+    end
+    X = dct2(X);
+    newPatches(:,i) = reshape(X, [pSize*pSize 1]);
 end
-% Apply dct2
-X = dct2(double(X));
-
-normVector = reshape(X, [pSize*pSize 1]);
 
 end
 

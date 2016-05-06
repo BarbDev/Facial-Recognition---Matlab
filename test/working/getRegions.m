@@ -10,7 +10,7 @@ Rheight = height / 2;
 
 % On boucle sur les 4 Region
 count = 1;
-R = zeros(Rheight,Rwidth,4, 'uint8'); % Pour de meilleur performance,
+R = zeros(Rheight,Rwidth,4); % Pour de meilleur performance,
 % pré-allocation et conversion en uint8 pour correspondre aux données
 % de l'image
 for j = 0:1
