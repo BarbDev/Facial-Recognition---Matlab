@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Algorithme de test</a></li><li><a href="#3">On normalise les patches pour avoir 'zero mean and unit variance'</a></li><li><a href="#4">Affichage des r&eacute;sultats</a></li></ul></div><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Algorithme de test</a></li><li><a href="#3">On normalise les patches pour avoir 'zero mean and unit variance'</a></li><li><a href="#4">On ne normalise pas (pour comparaison)</a></li><li><a href="#6">Affichage r&eacute;sultat recontruction image &agrave; partir des patchs</a></li><li><a href="#7">Affichage r&eacute;sultats DCT</a></li><li><a href="#8">Affichage r&eacute;sultats DCT2</a></li></ul></div><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 </pre><h2>Algorithme de test<a name="2"></a></h2><pre class="codeinput">clear <span class="string">variables</span>
 close <span class="string">all</span>
 clc
@@ -86,11 +86,19 @@ overflow = 3;
 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
 
 patches = getPatches(R, pSize, overflow);
-</pre><h2>On normalise les patches pour avoir 'zero mean and unit variance'<a name="3"></a></h2><pre class="codeinput">normPatch = patches;
-[vSize, nbrFeature] = size(normPatch);
+
+
+patchNormDCT2 = patches;
+patchNormDCT = patches;
+patchDCT2 = patches;
+patchDCT = patches;
+[vSize, nbrFeature] = size(patchNormDCT2);
 <span class="keyword">for</span> i = 1:nbrFeature
-    normPatch(:,i) = normDct(normPatch(:,i), pSize);
-<span class="keyword">end</span>
+</pre><h2>On normalise les patches pour avoir 'zero mean and unit variance'<a name="3"></a></h2><pre class="codeinput">    patchNormDCT2(:,i) = normDct2(patchNormDCT2(:,i), pSize, true);
+    patchNormDCT(:,i) = normDct(patchNormDCT(:,i), true);
+</pre><h2>On ne normalise pas (pour comparaison)<a name="4"></a></h2><pre class="codeinput">    patchDCT2(:,i) = normDct2(patchDCT2(:,i), pSize, false);
+    patchDCT(:,i) = normDct(patchDCT(:,i), false);
+</pre><pre class="codeinput"><span class="keyword">end</span>
 
 <span class="comment">% %% 'select the 15 lower frequency components of the DCT coefficients'</span>
 <span class="comment">% % Pour chaque patch on ne garde que les 15 coef les + petits (c &ccedil;a?)</span>
@@ -109,11 +117,27 @@ patches = getPatches(R, pSize, overflow);
 <span class="comment">%     %TODO Bug, pas la m&ecirc;me taille...</span>
 <span class="comment">%     normPatch(:,i) = vector;</span>
 <span class="comment">% end</span>
-</pre><h2>Affichage des r&eacute;sultats<a name="4"></a></h2><pre class="codeinput">imgF = getImgFromPatches(patches, size(R), overflow);
-imshow(imgF)
-figure
-imshow(normPatch)
-</pre><img vspace="5" hspace="5" src="finalTestv2_01.png" style="width:183px;height:110px;" alt=""> <img vspace="5" hspace="5" src="finalTestv2_02.png" style="width:189px;height:123px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+</pre><h2>Affichage r&eacute;sultat recontruction image &agrave; partir des patchs<a name="6"></a></h2><pre class="codeinput">figure(<span class="string">'Name'</span>, <span class="string">'DCT &amp; DCT2 comparison'</span>)
+subplot(3,2,[1 2])
+imgPatch = getImgFromPatches(patches, size(R), overflow);
+imshow(imgPatch)
+</pre><img vspace="5" hspace="5" src="finalTestv2_01.png" style="width:560px;height:420px;" alt=""> <h2>Affichage r&eacute;sultats DCT<a name="7"></a></h2><pre class="codeinput">imgPatchDCT = getImgFromPatches(patchDCT, size(R), overflow);
+subplot(3,2,3)
+imshow(imgPatchDCT)
+title(<span class="string">'DCT without normalization'</span>)
+imgPatchNormDCT = getImgFromPatches(patchNormDCT, size(R), overflow);
+subplot(3,2,4)
+imshow(imgPatchNormDCT)
+title(<span class="string">'DCT with normalization'</span>)
+</pre><img vspace="5" hspace="5" src="finalTestv2_02.png" style="width:560px;height:420px;" alt=""> <h2>Affichage r&eacute;sultats DCT2<a name="8"></a></h2><pre class="codeinput">imgPatchDCT2 = getImgFromPatches(patchDCT2, size(R), overflow);
+subplot(3,2,5)
+imshow(imgPatchDCT2)
+title(<span class="string">'DCT2 without normalization'</span>)
+imgPatchNormDCT2 = getImgFromPatches(patchNormDCT2, size(R), overflow);
+subplot(3,2,6)
+imshow(imgPatchNormDCT2)
+title(<span class="string">'DCT2 with normalization'</span>)
+</pre><img vspace="5" hspace="5" src="finalTestv2_03.png" style="width:560px;height:420px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Algorithme de test
@@ -137,11 +161,19 @@ overflow = 3;
 
 patches = getPatches(R, pSize, overflow);
 
-%% On normalise les patches pour avoir 'zero mean and unit variance'
-normPatch = patches;
-[vSize, nbrFeature] = size(normPatch);
+
+patchNormDCT2 = patches;
+patchNormDCT = patches;
+patchDCT2 = patches;
+patchDCT = patches;
+[vSize, nbrFeature] = size(patchNormDCT2);
 for i = 1:nbrFeature
-    normPatch(:,i) = normDct(normPatch(:,i), pSize);
+    %% On normalise les patches pour avoir 'zero mean and unit variance'
+    patchNormDCT2(:,i) = normDct2(patchNormDCT2(:,i), pSize, true);
+    patchNormDCT(:,i) = normDct(patchNormDCT(:,i), true);
+    %% On ne normalise pas (pour comparaison)
+    patchDCT2(:,i) = normDct2(patchDCT2(:,i), pSize, false);
+    patchDCT(:,i) = normDct(patchDCT(:,i), false);
 end
 
 % %% 'select the 15 lower frequency components of the DCT coefficients'
@@ -163,10 +195,30 @@ end
 % end
 
 
-%% Affichage des résultats
-imgF = getImgFromPatches(patches, size(R), overflow);
-imshow(imgF)
-figure
-imshow(normPatch)
+%% Affichage résultat recontruction image à partir des patchs
+figure('Name', 'DCT & DCT2 comparison')
+subplot(3,2,[1 2])
+imgPatch = getImgFromPatches(patches, size(R), overflow);
+imshow(imgPatch)
+
+%% Affichage résultats DCT
+imgPatchDCT = getImgFromPatches(patchDCT, size(R), overflow);
+subplot(3,2,3)
+imshow(imgPatchDCT)
+title('DCT without normalization')
+imgPatchNormDCT = getImgFromPatches(patchNormDCT, size(R), overflow);
+subplot(3,2,4)
+imshow(imgPatchNormDCT)
+title('DCT with normalization')
+
+%% Affichage résultats DCT2
+imgPatchDCT2 = getImgFromPatches(patchDCT2, size(R), overflow);
+subplot(3,2,5)
+imshow(imgPatchDCT2)
+title('DCT2 without normalization')
+imgPatchNormDCT2 = getImgFromPatches(patchNormDCT2, size(R), overflow);
+subplot(3,2,6)
+imshow(imgPatchNormDCT2)
+title('DCT2 with normalization')
 ##### SOURCE END #####
 --></body></html>
