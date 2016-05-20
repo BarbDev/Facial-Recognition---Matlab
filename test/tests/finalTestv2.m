@@ -8,7 +8,7 @@ img = imread('img.pgm');
 if size(img,3)==3 % Convertion en nuance de gris si RGB avant
    img = rgb2gray(img);
 end
-regions = getRegions(img);
+regions = getRegions(double(img));
 R = regions(:,:,1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
