@@ -26,14 +26,14 @@ end
 nbrCtemp = RWidth / (pSize-overflow);
 nbrC = uint32(nbrCtemp);
 % Pour être sûr d'arrondir au supérieur
-if mod(nbrC,1) ~= 0 && mod(nbrC,1) < 0.5
+if mod(nbrCtemp,1) ~= 0 && mod(nbrCtemp,1) < 0.5
     nbrC = nbrC + 1;
 end
 
 nbrRtemp = RHeight / pSize;
 nbrR = uint32(nbrRtemp);
 % Pour être sûr d'arrondir au supérieur
-if mod(nbrR,1) ~= 0 && mod(nbrR,1) < 0.5
+if mod(nbrRtemp,1) ~= 0 && mod(nbrRtemp,1) < 0.5
     nbrR = nbrR + 1;
 end
 
