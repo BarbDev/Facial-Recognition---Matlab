@@ -127,6 +127,7 @@ for k = 3:No_Folders_In_Training_Set_Folder
     
 end
 close(h)
+% A contains all the training image stored in 1 column
 A = Image_Data_Matrix;
 A = A/(diag(sqrt(diag(A'*A))));
 
@@ -270,8 +271,8 @@ else
     Test_Image = test;
 end
 Test_Image_Down_Sampled = double(imresize(Test_Image,[m1 n1]));
-y = Test_Image_Down_Sampled(:);
-n = size(A,2);
+y = Test_Image_Down_Sampled(:); % image to be tested in column
+n = size(A,2); % size of number of image (for n image)
 % fprintf('Processing .... \n')
 % set(handles.edit3,'String','Processing ... !')
 % drawnow;
@@ -288,7 +289,7 @@ Aeq=[A -A];
 lb=zeros(2*n,1);
 x1 = linprog(f,[],[],Aeq,y,lb,[],[],[]);
 x1 = x1(1:n)-x1(n+1:2*n);
-nn = No_Files_In_Class_Folder;
+nn = No_Files_In_Class_Folder
 nn = cumsum(nn);
 tmp_var = 0;
 k1 = Class_Count-1;
