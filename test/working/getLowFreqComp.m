@@ -14,9 +14,17 @@ for i = 1:nbrFeature
     %lowFreqComps(:,i) = vec(uint8(center-7):uint8(center+7));
     vec = normalizedPatches(:,i);
     temp = sort(vec(vec>0), 'ascend');
-    pos(:,i) = temp(1:15);
+    if size(temp) < 15
+        pos(:,i) = [temp(1:end) zeros([(15 - size(temp)) 1])];
+    else
+        pos(:,i) = temp(1:15);
+    end
     temp = sort(vec(vec<0), 'descend');
-    neg(:,i) = temp(1:15);
+    if size(temp) < 15
+        neg(:,i) = [temp(1:end) zeros([(15 - size(temp)) 1])];
+    else
+        neg(:,i) = temp(1:15);
+    end
 end
 
 end
