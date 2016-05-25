@@ -1,29 +1,20 @@
-function [ pos, neg ] = getLowFreqComp( normalizedPatches )
-%GETLOWFREQCOMP Summary of this function goes here
+function [ lowFreqComps ] = getLowFreqComp( normalizedPatches )
+%GETLOWFREQCOMP Returns the 15 frequencies closest to 0
 %   Detailed explanation goes here
 
-[vSize, nbrFeature] = size(normalizedPatches);
-%center = vSize/2; % Get column size (btw its only a column)
-%lowFreqComps = zeros(15, nbrFeature); % Memory allocation
-pos = zeros(15, nbrFeature);
-neg = zeros(15, nbrFeature);
-%temp = zeros(vSize);
+nbrFeature = size(normalizedPatches,2);
+lowFreqComps = zeros(15, nbrFeature); % Memory allocation
 
 for i = 1:nbrFeature
-    %vec = unique(nonzeros(normalizedPatches(:,i))); % do unique rather than just sorting ?
-    %lowFreqComps(:,i) = vec(uint8(center-7):uint8(center+7));
-    vec = normalizedPatches(:,i);
-    temp = sort(vec(vec>0), 'ascend');
-    if size(temp) < 15
-        pos(:,i) = [temp(1:end) zeros([(15 - size(temp)) 1])];
+    vec = sort(nonzeros(normalizedPatches(:,i))); % discard 0 + sorting
+    [~,center] = min(abs(vec));
+    if center - 7 < 1
+        lowFreqComps(:,i) = vec(1:15);
+    elseif center + 7 > size(vec,1) % Account for varying vector size due to the 0 discard
+        lowFreqComps(:,i) = vec(size(vec,1)-14:size(vec,1));
     else
-        pos(:,i) = temp(1:15);
-    end
-    temp = sort(vec(vec<0), 'descend');
-    if size(temp) < 15
-        neg(:,i) = [temp(1:end) zeros([(15 - size(temp)) 1])];
-    else
-        neg(:,i) = temp(1:15);
+        % we are in the bounds of the vector, everything is ok
+        lowFreqComps(:,i) = vec(center-7:center+7);
     end
 end
 
