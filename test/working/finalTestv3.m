@@ -19,9 +19,9 @@ for i = 1:size(Dict,2) % Pour chaque 'class d'image'
         for k = 1:4 % Pour chaque région d'une image
             patches = getPatches(Rs(:,:,k), pSize, overflow);
             patchNormDCT2 = normDct2(patches, true, true);
-            lowFreq = getLowFreqComp(patchNormDCT2); % On a les 15 plus
-            Class(i).img(j).R(k).patches = lowFreq;
-            % petites valeurs positives et négative de chaque patchs
+            % Line below does not affect time spent, dont waste time on
+            % optimizing the allocation
+            Class(i).img(j).R(k).patches = getLowFreqComp(patchNormDCT2);
             
             % TODO générer sparse code pour chaque patch, ATTENTION
             % vérifier que c des positif, appliqué absolu, sinon foir avec
