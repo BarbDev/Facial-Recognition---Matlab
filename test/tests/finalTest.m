@@ -20,4 +20,4 @@ overflow = 3;
 
 patches = getPatches(R, pSize, overflow);
 imgF = getImgFromPatches(patches, size(R), overflow);
-imshow(imgF)
+imshow(imgF, [0 255])

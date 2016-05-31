@@ -65,16 +65,16 @@ end
 figure('Name', 'DCT & DCT2 comparison')
 subplot(3,2,[1 2])
 imgPatch = getImgFromPatches(patches, size(R), overflow);
-imshow(imgPatch)
+imshow(imgPatch, [0 255])
 
 %% Affichage résultats DCT
 imgPatchDCT = getImgFromPatches(patchDCT, size(R), overflow);
 subplot(3,2,3)
-imshow(imgPatchDCT)
+imshow(imgPatchDCT, [0 255])
 title('DCT without normalization')
 imgPatchNormDCT = getImgFromPatches(patchNormDCT, size(R), overflow);
 subplot(3,2,4)
-imshow(imgPatchNormDCT)
+imshow(imgPatchNormDCT, [0 255])
 title('DCT with normalization')
 
 %% Affichage résultats DCT2
@@ -84,5 +84,5 @@ imshow(imgPatchDCT2)
 title('DCT2 without normalization')
 imgPatchNormDCT2 = getImgFromPatches(patchNormDCT2, size(R), overflow);
 subplot(3,2,6)
-imshow(imgPatchNormDCT2)
+imshow(imgPatchNormDCT2, [0 255])
 title('DCT2 with normalization')
