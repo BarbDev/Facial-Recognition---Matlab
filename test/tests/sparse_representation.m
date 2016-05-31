@@ -7,7 +7,6 @@ clc
 %%% Chargement du dictionnaire ?
 % On a le repétoire de base
 % On précise le répertoire de dataset
-datasetName = 'database';
 currDir = pwd;
 
 if strcmp(getenv('OS'),'Windows_NT')
@@ -15,7 +14,7 @@ if strcmp(getenv('OS'),'Windows_NT')
 else
     separator = '/';
 end
-datasetPath = [currDir separator datasetName];
+datasetPath = [currDir separator 'database' separator 'dataset_ORL'];
 
 % Contenu du dataset
 datasetContent = dir(datasetPath);
