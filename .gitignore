@@ -1,2 +1,5 @@
 # ignore backup file from matlab
 *.asv
+# ignore folders
+database/
+SPASM/
