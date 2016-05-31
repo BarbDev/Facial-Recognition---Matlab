@@ -14,9 +14,10 @@ overflow = 3;
 Dict = getDataset('ORL');
 imgCount = 1;
 No_Files_In_Class_Folder = zeros(1,size(Dict,2));
+%%% These are the training data
 for i = 1:size(Dict,2) % Pour chaque 'class d'image'
-    No_Files_In_Class_Folder(i) = size(Dict(i).set, 2);
-    for j = 1:size(Dict(i).set, 2) % Pour chaque image d'une classe
+    No_Files_In_Class_Folder(i) = uint16(size(Dict(i).set, 2))/2;
+    for j = 1:No_Files_In_Class_Folder(i) % Pour chaque image d'une classe
         Rs = getRegions(Dict(i).set(j).img); 
         for k = 1:4 % Pour chaque région d'une image
             patches = getPatches(Rs(:,:,k), pSize, overflow);
@@ -36,11 +37,34 @@ for i = 1:size(Dict,2) % Pour chaque 'class d'image'
         imgCount = imgCount + 1;
     end
 end
+%%% These are the test data
+begJ = uint16(size(Dict(i).set, 2))/2;
+for i = 1:size(Dict,2) % Pour chaque 'class d'image'
+    for j = begJ+1:size(Dict(i).set, 2) % Pour chaque image d'une classe
+        Rs = getRegions(Dict(i).set(j).img); 
+        for k = 1:4 % Pour chaque région d'une image
+            patches = getPatches(Rs(:,:,k), pSize, overflow);
+            patchNormDCT2 = normDct2(patches, true, true);
+            % Line below does not affect time spent, dont waste time on
+            % optimizing the allocation
+            % Get description of one vector
+            Test(i).img(j-begJ).R(k).descriptor = 1/size(patchNormDCT2,2)*sum(getLowFreqComp(patchNormDCT2),2);
+        end
+        Test(i).img(j-begJ).imgDescrip = zeros(15,1);
+        for k = 1:4
+            % Once we got all the descriptor we add them to create the img
+            % descriptor
+            Test(i).img(j-begJ).imgDescrip = Test(i).img(j-begJ).R(k).descriptor + Test(i).img(j-begJ).imgDescrip;
+        end
+    end
+end
+
+
 % Now that A contains all the stuff, we can copy the method from SRC
 A = A/(diag(sqrt(diag(A'*A)))); % Learning ? idk wtf it does, just get lower coef, matrix still same size
 
 %%% Début comparaison avec image de test
-y = Class(1).img(1).imgDescrip; % image to be tested
+y = Test(3).img(3).imgDescrip; % image to be tested
 n = size(A,2); % size of number of image (for n image)
 
 f=ones(2*n,1); % Generate a colum full of one size 2*n ->2*number of image
